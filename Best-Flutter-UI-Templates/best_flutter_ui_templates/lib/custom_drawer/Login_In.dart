@@ -1,3 +1,5 @@
+import 'package:best_flutter_ui_templates/home_screen.dart';
+import 'package:best_flutter_ui_templates/navigation_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,8 +30,32 @@ class _LoginIN extends State<LoginIN> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Column(children: []),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            obscureText: true,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'email',
+            ),
+          ),
+          TextField(
+            obscureText: true,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Password',
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              print('Login pressed ...');
+              Navigator.push(context, MaterialPageRoute(builder: (context) => NavigationHomeScreen()));
+            },
+            child: Text('Login'),
+          ),
+        ],
+      ),
     );
   }
 }
