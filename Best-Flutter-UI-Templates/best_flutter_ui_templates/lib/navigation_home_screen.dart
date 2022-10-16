@@ -66,9 +66,6 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
           });
           break;
         case DrawerIndex.Invite:
-          setState(() {
-            screenView = InviteFriend();
-          });
           break;
         default:
           break;
