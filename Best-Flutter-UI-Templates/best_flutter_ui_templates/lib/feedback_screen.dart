@@ -1,5 +1,6 @@
 import 'package:best_flutter_ui_templates/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'thank_page.dart';
 
 class FeedbackScreen extends StatefulWidget {
   @override
@@ -8,6 +9,8 @@ class FeedbackScreen extends StatefulWidget {
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
   @override
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  bool check_string = false;
   void initState() {
     super.initState();
   }
@@ -77,7 +80,15 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
+                              _formkey.currentState?.validate();
                               FocusScope.of(context).requestFocus(FocusNode());
+                              if (check_string) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => thankScreen()));
+                              }
+                              ;
                             },
                             child: Center(
                               child: Padding(
@@ -130,18 +141,30 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             child: SingleChildScrollView(
               padding:
                   const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
-              child: TextField(
-                maxLines: null,
-                onChanged: (String txt) {},
-                style: TextStyle(
-                  fontFamily: AppTheme.fontName,
-                  fontSize: 16,
-                  color: AppTheme.dark_grey,
+              child: Form(
+                key: _formkey,
+                child: TextFormField(
+                  maxLines: null,
+                  onChanged: (String txt) {},
+                  style: TextStyle(
+                    fontFamily: AppTheme.fontName,
+                    fontSize: 16,
+                    color: AppTheme.dark_grey,
+                  ),
+                  cursorColor: Colors.blue,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Enter your feedback...'),
+                  validator: (value) {
+                    print('pass_1');
+                    if (value!.isEmpty) {
+                      return '不能為空';
+                    } else {
+                      check_string = true;
+                    }
+                    return null;
+                  },
                 ),
-                cursorColor: Colors.blue,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Enter your feedback...'),
               ),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:best_flutter_ui_templates/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpScreen extends StatefulWidget {
   @override
@@ -73,7 +74,10 @@ class _HelpScreenState extends State<HelpScreen> {
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            launchUrl(Uri.parse(
+                                'https://www.booking.com/customer-service.zh-tw.html'));
+                          },
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),

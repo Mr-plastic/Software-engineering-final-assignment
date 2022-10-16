@@ -20,8 +20,10 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   List<DrawerList>? drawerList;
+  TextEditingController check = TextEditingController();
   @override
   void initState() {
+    check.text = 'User_1';
     setDrawerListArray();
     super.initState();
   }
@@ -104,8 +106,8 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 4),
-                    child: Text(
-                      'User_1',
+                    child: TextField(
+                      controller: check,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: isLightMode ? AppTheme.grey : AppTheme.white,
