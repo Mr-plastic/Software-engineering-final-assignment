@@ -115,48 +115,25 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
     );
   }
 
-  Widget getListUI() {
-    return Container(
-      decoration: BoxDecoration(
-        color: HotelAppTheme.buildLightTheme().backgroundColor,
-        boxShadow: <BoxShadow>[
-          BoxShadow(color: Colors.grey.withOpacity(0.2), offset: const Offset(0, -2), blurRadius: 8.0),
-        ],
-      ),
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 156 - 50,
-            child: FutureBuilder<bool>(
-              future: getData(),
-              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                if (!snapshot.hasData) {
-                  return const SizedBox();
-                } else {
-                  return ListView.builder(
-                    itemCount: hotelList.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (BuildContext context, int index) {
-                      final int count = hotelList.length > 10 ? 10 : hotelList.length;
-                      final Animation<double> animation =
-                          Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController!, curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
-                      animationController?.forward();
+  void getListUI(String seartchTxt) {
+    hotelList = [];
+    for (int i = 0; i < HotelListData.hotelList.length; i++) {
+      if (HotelListData.hotelList[i].titleTxt.toLowerCase().contains(seartchTxt.toLowerCase())) {
+        hotelList.add(HotelListData.hotelList[i]);
+      }
+    }
 
-                      return HotelListView(
-                        callback: () {},
-                        hotelData: hotelList[index],
-                        animation: animation,
-                        animationController: animationController!,
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          )
-        ],
-      ),
-    );
+    if (hotelList.length == 0) {
+      hotelList.add(HotelListData(
+        imagePath: 'assets/hotel/hotel_1.png',
+        titleTxt: 'No seartch',
+        subTxt: '',
+        dist: 2.0,
+        reviews: 80,
+        rating: 4.4,
+        perNight: 180,
+      ));
+    }
   }
 
   Widget getHotelViewList() {
@@ -295,6 +272,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
   }
 
   Widget getSearchBarUI() {
+    var seartchController = TextEditingController();
+    String seartchTxt = '';
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
       child: Row(
@@ -315,7 +294,10 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
                   child: TextField(
-                    onChanged: (String txt) {},
+                    controller: seartchController,
+                    onChanged: (String txt) {
+                      seartchTxt = txt;
+                    },
                     style: const TextStyle(
                       fontSize: 18,
                     ),
@@ -347,6 +329,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen> with TickerProviderSt
                 ),
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
+                  setState(() {
+                    getListUI(seartchController.text);
+                  });
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
